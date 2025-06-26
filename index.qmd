@@ -1,0 +1,30 @@
+---
+author: "Shuntaro Kawakami"
+execute:
+    echo: false
+---
+
+New York City
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+x <- read_csv("data/nyc_tracts.csv")
+```
+
+
+```{r}
+x %>%
+  group_by(race) %>%
+  summarize(avg_income = mean(med_income, na.rm = TRUE)) %>%
+  ggplot(aes(x = reorder(race, -avg_income), y = avg_income, fill = race)) +
+  geom_col() +
+  labs(
+    title = "Average Median Income by Race",
+    x = "Race",
+    y = "Average Median Income (USD)"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::dollar)
+```
